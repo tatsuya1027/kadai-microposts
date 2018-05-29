@@ -25,10 +25,14 @@ Route::get('logout', 'Auth\AuthController@getLogout')->name('logout.get');
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
     Route::group(['prefix' => 'users/{id}'], function () { 
-        Route::post('follow', 'UserFollowController@store')->name('user.follow');
-        Route::delete('unfollow', 'UserFollowController@destroy')->name('user.unfollow');
-        Route::get('followings', 'UsersController@followings')->name('users.followings');
+        Route::post('follow', 'UserFollowController@update')->name('user.follow');         // /users/8/follow
+        Route::delete('unfollow', 'UserFollowController@destroy')->name('user.unfollow'); // /users/8/unfollow
+        Route::get('followings', 'UsersController@followings')->name('users.followings'); // /users/8/followings
         Route::get('followers', 'UsersController@followers')->name('users.followers');
+
+        Route::post('favorite', 'MicropostFavoriteController@update')->name('micropost.favorite');
+        Route::delete('unfavorite', 'MicropostFavoriteController@destroy')->name('micropost.unfavorite');
+        Route::get('favorites', 'UsersController@favorites')->name('users.favorites');
     });
 
     Route::resource('microposts', 'MicropostsController', ['only' => ['store', 'destroy']]);
